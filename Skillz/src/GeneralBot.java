@@ -3,7 +3,7 @@
 	import java.util.LinkedList;
 	import pirates.*;
 	
-public class GeneralBot {
+public class GeneralBot extends PirateBot{
 
 
 	/**
