@@ -24,9 +24,9 @@ public class GeneralBot implements PirateBot{
 	    	for (int i = 0; i < game.getMyMotherships().length; i++) {
 		        motherships.add(game.getMyMotherships()[i]); 
 			}
-	    	ArrayList <Asteroid> astroids= new ArrayList<Asteroid>();
+	    	ArrayList <Asteroid> livingAstroids= new ArrayList<Asteroid>();
 	    	for (int i = 0; i < game.getLivingAsteroids().length; i++) {
-		        astroids.add(game.getLivingAsteroids()[i]); 
+		        livingAstroids.add(game.getLivingAsteroids()[i]); 
 			}
 	        
 	        
