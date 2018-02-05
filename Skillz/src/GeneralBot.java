@@ -2,7 +2,7 @@
 import java.util.*;
 	import pirates.*;
 	
-public class GeneralBot {
+public class GeneralBot extends PirateBot{
 
 
 	/**
