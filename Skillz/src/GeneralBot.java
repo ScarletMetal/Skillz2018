@@ -1,6 +1,5 @@
-	import java.util.Arrays;
-	import java.util.List;
-	import java.util.LinkedList;
+	import java.util.ArrayList;
+import java.util.*;
 	import pirates.*;
 	
 public class GeneralBot {
@@ -16,24 +15,27 @@ public class GeneralBot {
 	     */
 	    public void doTurn(PirateGame game) {
 	        // Get one of my pirates.
-	        Pirate pirate = game.getMyLivingPirates()[0];
+	    	ArrayList <Pirate> livingPirates= new ArrayList<Pirate>();
+	        livingPirates.add(game.getMyLivingPirates()[0]); 
 	        
 	        
+	        for (int i = 0; i < livingPirates.size(); i++) {
+		        if (!tryPush(livingPirates.get(i), game)) {
+		            // If the pirate doesn't have a capsule, go and get it!
+		            if (livingPirates.get(i).capsule == null) {
+		                Capsule capsule =game.getMyCapsules()[0];
+		                livingPirates.get(i).sail(capsule);
+		            }
+		            // Else, go to my mothership.
+		            else {
+		                // Get my mothership.
+		                Mothership mothership = game.getMyMotherships()[0];
+		                // Go towards the mothership.
+		                livingPirates.get(i).sail(mothership);
+		            }
+		        }
+			}
 	        // Try to push, if you didn't - take the capsule and go to the mothership.
-	        if (!tryPush(pirate, game)) {
-	            // If the pirate doesn't have a capsule, go and get it!
-	            if (pirate.capsule == null) {
-	                Capsule capsule =game.getMyCapsules()[0];
-	                pirate.sail(capsule);
-	            }
-	            // Else, go to my mothership.
-	            else {
-	                // Get my mothership.
-	                Mothership mothership = game.getMyMotherships()[0];
-	                // Go towards the mothership.
-	                pirate.sail(mothership);
-	            }
-	        }
 	    }
 
 	    /**
