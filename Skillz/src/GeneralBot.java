@@ -2,7 +2,7 @@
 import java.util.*;
 	import pirates.*;
 	
-public class GeneralBot extends PirateBot{
+public class GeneralBot implements PirateBot{
 
 
 	/**
@@ -15,8 +15,11 @@ public class GeneralBot extends PirateBot{
 	     */
 	    public void doTurn(PirateGame game) {
 	        // Get one of my pirates.
+	    	
 	    	ArrayList <Pirate> livingPirates= new ArrayList<Pirate>();
-	        livingPirates.add(game.getMyLivingPirates()[0]); 
+	    	for (int i = 0; i < game.getMyLivingPirates().length; i++) {
+		        livingPirates.add(game.getMyLivingPirates()[i]); 
+			}
 	        
 	        
 	        for (int i = 0; i < livingPirates.size(); i++) {
