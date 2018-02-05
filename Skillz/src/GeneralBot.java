@@ -20,29 +20,32 @@ public class GeneralBot implements PirateBot{
 	    	for (int i = 0; i < game.getMyLivingPirates().length; i++) {
 		        livingPirates.add(game.getMyLivingPirates()[i]); 
 			}
+	    	
 	    	ArrayList <Mothership> motherships = new ArrayList<Mothership>();
 	    	for (int i = 0; i < game.getMyMotherships().length; i++) {
 		        motherships.add(game.getMyMotherships()[i]); 
 			}
+	    	
 	    	ArrayList <Asteroid> livingAstroids= new ArrayList<Asteroid>();
 	    	for (int i = 0; i < game.getLivingAsteroids().length; i++) {
 		        livingAstroids.add(game.getLivingAsteroids()[i]); 
 			}
 	        
+	    	ArrayList <Capsule> capsules= new ArrayList<Capsule>();
+	    	for (int i = 0; i < game.getMyCapsules().length; i++) {
+		        capsules.add(game.getMyCapsules()[i]); 
+			}
 	        
 	        for (int i = 0; i < livingPirates.size(); i++) {
 		        if (!tryPush(livingPirates.get(i), game)) {
 		            // If the pirate doesn't have a capsule, go and get it!
 		            if (livingPirates.get(i).capsule == null) {
-		                Capsule capsule =game.getMyCapsules()[0];
-		                livingPirates.get(i).sail(capsule);
+		                livingPirates.get(i).sail(capsules.get(0));
 		            }
 		            // Else, go to my mothership.
 		            else {
-		                // Get my mothership.
-		                Mothership mothership = game.getMyMotherships()[0];
-		                // Go towards the mothership.
-		                livingPirates.get(i).sail(mothership);
+		               
+		                livingPirates.get(i).sail(motherships.get(0));
 		            }
 		        }
 			}
