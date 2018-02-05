@@ -20,6 +20,14 @@ public class GeneralBot implements PirateBot{
 	    	for (int i = 0; i < game.getMyLivingPirates().length; i++) {
 		        livingPirates.add(game.getMyLivingPirates()[i]); 
 			}
+	    	ArrayList <Mothership> motherships = new ArrayList<Mothership>();
+	    	for (int i = 0; i < game.getMyMotherships().length; i++) {
+		        motherships.add(game.getMyMotherships()[i]); 
+			}
+	    	ArrayList <Asteroid> astroids= new ArrayList<Asteroid>();
+	    	for (int i = 0; i < game.getLivingAsteroids().length; i++) {
+		        astroids.add(game.getLivingAsteroids()[i]); 
+			}
 	        
 	        
 	        for (int i = 0; i < livingPirates.size(); i++) {
