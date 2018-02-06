@@ -5,11 +5,6 @@ import pirates.*;
 
 public class MyBot implements PirateBot {
 
-    	private static final ArrayList<Pirate> livingPirates	= new ArrayList<Pirate>();
-		private static final ArrayList<Mothership> motherships	= new ArrayList<Mothership>();
-    	private static final ArrayList<Asteroid> livingAstroids	= new ArrayList<Asteroid>();
-    	private static final ArrayList<Capsule> capsules = new ArrayList<Capsule>();
-    	private static final ArrayList<Pirate> collectors = new ArrayList<Pirate>();
 	/**
 	 * This is an example for a bot.
 	 */
@@ -22,24 +17,32 @@ public class MyBot implements PirateBot {
 	public void doTurn(PirateGame game) {
 		// Get one of my pirates.
 
-		for (int i = 0; i < game.getMyLivingPirates().length; i++) {
-			livingPirates.add(game.getMyLivingPirates()[i]);
-		}
+		final ArrayList<Pirate> livingPirates = new ArrayList<Pirate>();
+        livingPirates.addAll(Arrays.asList(game.getMyLivingPirates()));
 
-		for (int i = 0; i < game.getMyMotherships().length; i++) {
-			motherships.add(game.getMyMotherships()[i]);
-		}
+		final ArrayList<Mothership> motherships = new ArrayList<Mothership>();
+        motherships.addAll(Arrays.asList(game.getMyMotherships()));
 
-		for (int i = 0; i < game.getLivingAsteroids().length; i++) {
-			livingAstroids.add(game.getLivingAsteroids()[i]);
-		}
+		final ArrayList<Asteroid> livingAstroids = new ArrayList<Asteroid>();
+        livingAstroids.addAll(Arrays.asList(game.getLivingAsteroids()));
 
-		for (int i = 0; i < game.getMyCapsules().length; i++) {
-			capsules.add(game.getMyCapsules()[i]);
-		}
+		final ArrayList<Capsule> capsules = new ArrayList<Capsule>();
+        capsules.addAll(Arrays.asList(game.getMyCapsules()));
 
-		
+		for (Pirate pirate : livingPirates) {
+			if (!tryPush(pirate, game)) {
+				// If the pirate doesn't have a capsule, go and get it!
+				if (pirate.capsule == null) {
+					SailToCapsule(capsules, livingPirates);
+				}
+				// Else, go to my mothership.
+				else {
+					pirate.sail(motherships.get(0));
+				}
+			}
 		}
+		// Try to push, if you didn't - take the capsule and go to the mothership.
+	}
 
 	/**
 	 * Makes the pirate try to push an enemy pirate or an asteroid. Returns True if
@@ -87,16 +90,8 @@ public class MyBot implements PirateBot {
 		return false;
 	}
 
-	private void SailToCapsule() {
+	private void SailToCapsule(Pirate pirate, Capsule capsule) {
 
-	}
-	
-    private static void resetArrayLists(){
-        livingPirates.clear();
-        livingAstroids.clear();
-        motherships.clear();
-        capsules.clear();
-        collectors.clear();
     }
 
 }
