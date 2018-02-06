@@ -17,36 +17,27 @@ public class MyBot implements PirateBot {
 	public void doTurn(PirateGame game) {
 		// Get one of my pirates.
 
-		ArrayList<Pirate> livingPirates = new ArrayList<Pirate>();
-		for (int i = 0; i < game.getMyLivingPirates().length; i++) {
-			livingPirates.add(game.getMyLivingPirates()[i]);
-		}
+		final ArrayList<Pirate> livingPirates = new ArrayList<Pirate>();
+        livingPirates.addAll(Arrays.asList(game.getMyLivingPirates()));
 
-		ArrayList<Mothership> motherships = new ArrayList<Mothership>();
-		for (int i = 0; i < game.getMyMotherships().length; i++) {
-			motherships.add(game.getMyMotherships()[i]);
-		}
+		final ArrayList<Mothership> motherships = new ArrayList<Mothership>();
+        motherships.addAll(Arrays.asList(game.getMyMotherships()));
 
-		ArrayList<Asteroid> livingAstroids = new ArrayList<Asteroid>();
-		for (int i = 0; i < game.getLivingAsteroids().length; i++) {
-			livingAstroids.add(game.getLivingAsteroids()[i]);
-		}
+		final ArrayList<Asteroid> livingAstroids = new ArrayList<Asteroid>();
+        livingAstroids.addAll(Arrays.asList(game.getLivingAsteroids()));
 
-		ArrayList<Capsule> capsules = new ArrayList<Capsule>();
-		for (int i = 0; i < game.getMyCapsules().length; i++) {
-			capsules.add(game.getMyCapsules()[i]);
-		}
+		final ArrayList<Capsule> capsules = new ArrayList<Capsule>();
+        capsules.addAll(Arrays.asList(game.getMyCapsules()));
 
-		for (int i = 0; i < livingPirates.size(); i++) {
-			if (!tryPush(livingPirates.get(i), game)) {
+		for (Pirate pirate : livingPirates) {
+			if (!tryPush(pirate, game)) {
 				// If the pirate doesn't have a capsule, go and get it!
-				if (livingPirates.get(i).capsule == null) {
+				if (pirate.capsule == null) {
 					SailToCapsule(capsules, livingPirates);
 				}
 				// Else, go to my mothership.
 				else {
-
-					livingPirates.get(i).sail(motherships.get(0));
+					pirate.sail(motherships.get(0));
 				}
 			}
 		}
