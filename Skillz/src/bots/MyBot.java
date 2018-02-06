@@ -30,16 +30,6 @@ public class MyBot implements PirateBot {
         capsules.addAll(Arrays.asList(game.getMyCapsules()));
 
 		for (Pirate pirate : livingPirates) {
-			if (!tryPush(pirate, game)) {
-				// If the pirate doesn't have a capsule, go and get it!
-				if (pirate.capsule == null) {
-					SailToCapsule(capsules, livingPirates);
-				}
-				// Else, go to my mothership.
-				else {
-					pirate.sail(motherships.get(0));
-				}
-			}
 		}
 		// Try to push, if you didn't - take the capsule and go to the mothership.
 	}
@@ -90,8 +80,7 @@ public class MyBot implements PirateBot {
 		return false;
 	}
 
-	private void SailToCapsule(Pirate pirate, Capsule capsule) {
-
+	private void SailToCapsule(ArrayList<Capsule> capsules, ArrayList<Pirate> pirates) {
     }
 
 }
