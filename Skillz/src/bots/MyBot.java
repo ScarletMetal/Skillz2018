@@ -1,6 +1,10 @@
 package bots;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import javax.swing.text.html.ListView;
+
 import pirates.*;
 
 public class MyBot implements PirateBot {
@@ -14,11 +18,15 @@ public class MyBot implements PirateBot {
 	 * @param game
 	 *            - the current game state.
 	 */
+
+	public static ArrayList<Capsule> capsules = new ArrayList<Capsule>();
 	public void doTurn(PirateGame game) {
 		// Get one of my pirates.
 
-		final ArrayList<Pirate> livingPirates = new ArrayList<Pirate>();
+		ArrayList<Pirate> livingPirates = new ArrayList<Pirate>();
         livingPirates.addAll(Arrays.asList(game.getMyLivingPirates()));
+        
+        final ArrayList<Pirate> collectors=new ArrayList<Pirate>(0);
 
 		final ArrayList<Mothership> motherships = new ArrayList<Mothership>();
         motherships.addAll(Arrays.asList(game.getMyMotherships()));
@@ -26,7 +34,6 @@ public class MyBot implements PirateBot {
 		final ArrayList<Asteroid> livingAstroids = new ArrayList<Asteroid>();
         livingAstroids.addAll(Arrays.asList(game.getLivingAsteroids()));
 
-		final ArrayList<Capsule> capsules = new ArrayList<Capsule>();
         capsules.addAll(Arrays.asList(game.getMyCapsules()));
 
 		for (Pirate pirate : livingPirates) {
@@ -78,6 +85,24 @@ public class MyBot implements PirateBot {
 
 		// Didn't push
 		return false;
+	}
+	
+	public static GameObject getNearest(GameObject obj,ArrayList<GameObject> arr) {
+		int min=arr.get(0).distance(obj);
+		GameObject nearest=arr.get(0);
+		for(int i=0;i<arr.size();i++) {
+			if(arr.get(i).distance(obj)<min) {
+				min=arr.get(i).distance(obj);
+				nearest=arr.get(i);
+			}
+		}
+		return nearest;
+	}
+	
+	public static void sailToCapsule() {
+		for(int i=0;i<capsules.size();i++) {
+		
+		}
 	}
 
 }
