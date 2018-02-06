@@ -102,7 +102,7 @@ public class MyBot implements PirateBot {
 	}
 
 	
-	private void Campers(ArrayList<Pirate> avialablePirates, PirateGame game) {
+	private void Campers(ArrayList<Pirate> avialablePirates, PirateGame game, Mothership enemyMothership) {
 
 		// Enemy Capsules
 		ArrayList<Capsule> enemyCapsules = new ArrayList<Capsule>();
@@ -126,32 +126,20 @@ public class MyBot implements PirateBot {
 
 		}
 
-		// Find enemy Mothership
-		ArrayList<Mothership> enemyMotherships = new ArrayList<Mothership>();
-		for (int i = 0; i < game.getEnemyMotherships().length; i++) {
-			enemyMotherships.add(game.getEnemyMotherships()[i]);
-		}
 
-		// Initialize Campers
+		for (Pirate enemyCapsulePirate : enemyCapsuleHolders) {
 
-		
-		if (enemyMotherships.size() == 1) {
+			for (Pirate camper : myCamperPirates) {
 
-			for (Mothership mothership : enemyMotherships) {
-
-				for (Pirate enemyCapsulePirate : enemyCapsuleHolders) {
-
-					for (Pirate camper : myCamperPirates) {
-
-						if (enemyCapsulePirate.distance(mothership) <= 800 && !canPushEnemyCapsule(myCamperPirates, enemyCapsulePirate, game)) {
+				//Check if enemy CapsulePirate is within distance and push if necessary 
+				if (enemyCapsulePirate.distance(enemyMothership) <= 800 && !canPushEnemyCapsule(myCamperPirates, enemyCapsulePirate, game)) {
 							camper.sail(enemyCapsulePirate.getLocation());
-						} else if (canPushEnemyCapsule(myCamperPirates, enemyCapsulePirate, game)) {
-							// ATM its to mothership num 0
+				} else if (canPushEnemyCapsule(myCamperPirates, enemyCapsulePirate, game)) {
 							camper.push(enemyCapsulePirate, game.getMyMotherships()[0]);
 						}
 
-						if (camper.distance(mothership) <= 250) {
-							camper.sail(mothership.getLocation());
+				if (camper.distance(enemyMothership) <= 250) {
+							camper.sail(enemyMothership.getLocation());
 						}
 
 					}
@@ -159,11 +147,9 @@ public class MyBot implements PirateBot {
 				}
 
 			}
-
-		}
 	
 	}
 
-}
+
 
 	
