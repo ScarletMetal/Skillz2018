@@ -4,6 +4,8 @@ import java.util.*;
 import pirates.*;
 
 public class MyBot implements PirateBot {
+	
+	private static final ArrayList<Pirate> livingPirates = new ArrayList<Pirate>();
 
 	/**
 	 * This is an example for a bot.
@@ -17,7 +19,7 @@ public class MyBot implements PirateBot {
 	public void doTurn(PirateGame game) {
 		// Get one of my pirates.
 
-		final ArrayList<Pirate> livingPirates = new ArrayList<Pirate>();
+		
         livingPirates.addAll(Arrays.asList(game.getMyLivingPirates()));
 
 		final ArrayList<Mothership> motherships = new ArrayList<Mothership>();
@@ -31,6 +33,11 @@ public class MyBot implements PirateBot {
 
 		for (Pirate pirate : livingPirates) {
 		}
+		
+		livingPirates.clear();
+        livingAstroids.clear();
+        motherships.clear();
+        capsules.clear();
 		// Try to push, if you didn't - take the capsule and go to the mothership.
 	}
 
