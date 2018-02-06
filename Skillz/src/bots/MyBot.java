@@ -5,7 +5,7 @@ import pirates.*;
 
 public class MyBot implements PirateBot {
 	
-	private static final ArrayList<Pirate> livingPirates = new ArrayList<Pirate>();
+	private static final ArrayList<Pirate> availablePirates = new ArrayList<Pirate>();
 
 	/**
 	 * This is an example for a bot.
@@ -20,7 +20,7 @@ public class MyBot implements PirateBot {
 		// Get one of my pirates.
 
 		
-        livingPirates.addAll(Arrays.asList(game.getMyLivingPirates()));
+        availablePirates.addAll(Arrays.asList(game.getMyLivingPirates()));
 
 		final ArrayList<Mothership> motherships = new ArrayList<Mothership>();
         motherships.addAll(Arrays.asList(game.getMyMotherships()));
@@ -30,11 +30,8 @@ public class MyBot implements PirateBot {
 
 		final ArrayList<Capsule> capsules = new ArrayList<Capsule>();
         capsules.addAll(Arrays.asList(game.getMyCapsules()));
-
-		for (Pirate pirate : livingPirates) {
-		}
 		
-		livingPirates.clear();
+		availablePirates.clear();
         livingAstroids.clear();
         motherships.clear();
         capsules.clear();
