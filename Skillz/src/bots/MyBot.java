@@ -80,7 +80,29 @@ public class MyBot implements PirateBot {
 		return false;
 	}
 
-	public void Campers(PirateGame game) {
+	// Num of pirates pushing EnemyCapsuleHolder at the same time
+		private boolean canPushEnemyCapsule (ArrayList<Pirate> pushingPirates, Pirate enemyCapsulePirate, PirateGame game) {
+			
+			int counter = 0;
+			
+			//check if Capsule Pirate can be pushed
+			if (enemyCapsulePirate != null) {
+		
+			for (Pirate pirate : pushingPirates) {
+				if(pirate.canPush(enemyCapsulePirate))
+					counter++;	
+			}
+			
+		}
+			
+			if( counter == pushingPirates.size()) 
+				return true;
+			else
+				return false;
+	}
+
+	
+	private void Campers(ArrayList<Pirate> avialablePirates, PirateGame game) {
 
 		// Enemy Capsules
 		ArrayList<Capsule> enemyCapsules = new ArrayList<Capsule>();
@@ -113,8 +135,6 @@ public class MyBot implements PirateBot {
 		// Initialize Campers
 
 		
-		
-		
 		if (enemyMotherships.size() == 1) {
 
 			for (Mothership mothership : enemyMotherships) {
@@ -123,9 +143,9 @@ public class MyBot implements PirateBot {
 
 					for (Pirate camper : myCamperPirates) {
 
-						if (enemyCapsulePirate.distance(mothership) <= 800 && !camper.canPush(enemyCapsulePirate)) {
+						if (enemyCapsulePirate.distance(mothership) <= 800 && !canPushEnemyCapsule(myCamperPirates, enemyCapsulePirate, game)) {
 							camper.sail(enemyCapsulePirate.getLocation());
-						} else if (camper.canPush(enemyCapsulePirate)) {
+						} else if (canPushEnemyCapsule(myCamperPirates, enemyCapsulePirate, game)) {
 							// ATM its to mothership num 0
 							camper.push(enemyCapsulePirate, game.getMyMotherships()[0]);
 						}
@@ -144,8 +164,6 @@ public class MyBot implements PirateBot {
 	
 	}
 
-
-	
 }
 
 	
