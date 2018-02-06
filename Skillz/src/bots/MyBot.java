@@ -80,7 +80,4 @@ public class MyBot implements PirateBot {
 		return false;
 	}
 
-	private void SailToCapsule(ArrayList<Capsule> capsules, ArrayList<Pirate> pirates) {
-    }
-
 }
