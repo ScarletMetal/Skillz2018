@@ -39,9 +39,13 @@ public class MyBot implements PirateBot {
 		sailToCapsule(capsules, collectors);
 		
 		final ArrayList<Pirate> campers = new ArrayList<Pirate>();
+		if(game.getEnemyMotherships().length != 0) {
 		chooseCampers(campers, game.getEnemyMotherships()[0]);
+		}
 		
 		collectorDoTurn(capsules, collectors, motherships);
+			if(game.getEnemyMotherships().length != 0)
+		campersDoTurn(campers, game, game.getEnemyMotherships()[0]);
 
 		availablePirates.clear();
 		livingAsteroids.clear();
@@ -184,7 +188,7 @@ public class MyBot implements PirateBot {
 	}
 }
 
-	private static void Campers(ArrayList<Pirate> myCamperPirates,PirateGame game, Mothership enemyMothership) {
+	private static void campersDoTurn(ArrayList<Pirate> myCamperPirates,PirateGame game, Mothership enemyMothership) {
 
 	// Enemy Capsules
 	ArrayList<Capsule> enemyCapsules = new ArrayList<Capsule>();
@@ -206,7 +210,7 @@ public class MyBot implements PirateBot {
 			if (enemyCapsulePirate.distance(enemyMothership) <= 800 && !canPushEnemyCapsule(myCamperPirates, enemyCapsulePirate, game)) {
 						camper.sail(enemyCapsulePirate.getLocation());
 			} else if (canPushEnemyCapsule(myCamperPirates, enemyCapsulePirate, game)) {
-						camper.push(enemyCapsulePirate, game.getMyMotherships()[0]);
+						camper.push(enemyCapsulePirate, enemyCapsulePirate.initialLocation);
 					}
 
 			else if (camper.distance(enemyMothership) <= 250) {
