@@ -5,6 +5,7 @@ import pirates.*;
 
 public class MyBot implements PirateBot {
 
+	
 	private static final ArrayList<Pirate> availablePirates = new ArrayList<Pirate>();
 
 	/**
@@ -19,7 +20,7 @@ public class MyBot implements PirateBot {
 	public void doTurn(PirateGame game) {
 		// Get one of my pirates.
 
-		availablePirates.addAll(Arrays.asList(game.getMyLivingPirates()));
+        availablePirates.addAll(Arrays.asList(game.getMyLivingPirates()));
 
 		final ArrayList<Mothership> motherships = new ArrayList<Mothership>();
 		motherships.addAll(Arrays.asList(game.getMyMotherships()));
@@ -31,6 +32,8 @@ public class MyBot implements PirateBot {
 		capsules.addAll(Arrays.asList(game.getMyCapsules()));
 		
 		avoidBoulders(livingAsteroids, game);
+		
+		sailToCapsule();
 
 		availablePirates.clear();
 		livingAsteroids.clear();
