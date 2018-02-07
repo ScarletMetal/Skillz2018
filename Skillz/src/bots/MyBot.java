@@ -5,6 +5,20 @@ import pirates.*;
 
 public class MyBot implements PirateBot {
 
+	
+	private static final ArrayList<Pirate> availablePirates = new ArrayList<Pirate>();
+	
+	private static final ArrayList<Pirate> enemyPirates = new ArrayList<Pirate>();
+
+	private static final ArrayList<Pirate> collectors = new ArrayList<Pirate>();
+	
+	private static final ArrayList<Capsule> capsules = new ArrayList<Capsule>();
+	
+    private static final ArrayList<Asteroid> livingAsteroids = new ArrayList<Asteroid>();
+
+	private static final ArrayList<Mothership> motherships = new ArrayList<Mothership>();
+
+
 	/**
 	 * This is an example for a bot.
 	 */
@@ -15,71 +29,110 @@ public class MyBot implements PirateBot {
 	 *            - the current game state.
 	 */
 	public void doTurn(PirateGame game) {
+	    if(game.getMyLivingPirates().length>0){
 		// Get one of my pirates.
 
-		final ArrayList<Pirate> livingPirates = new ArrayList<Pirate>();
-        livingPirates.addAll(Arrays.asList(game.getMyLivingPirates()));
+        availablePirates.addAll(Arrays.asList(game.getMyLivingPirates()));
 
-		final ArrayList<Mothership> motherships = new ArrayList<Mothership>();
-        motherships.addAll(Arrays.asList(game.getMyMotherships()));
+        enemyPirates.addAll(Arrays.asList(game.getEnemyLivingPirates()));
 
-		final ArrayList<Asteroid> livingAstroids = new ArrayList<Asteroid>();
-        livingAstroids.addAll(Arrays.asList(game.getLivingAsteroids()));
+		motherships.addAll(Arrays.asList(game.getMyMotherships()));
 
-		final ArrayList<Capsule> capsules = new ArrayList<Capsule>();
-        capsules.addAll(Arrays.asList(game.getMyCapsules()));
+		livingAsteroids.addAll(Arrays.asList(game.getLivingAsteroids()));
 
-		for (Pirate pirate : livingPirates) {
-		}
+		capsules.addAll(Arrays.asList(game.getMyCapsules()));
+		
+		avoidBoulders(livingAsteroids, game);
+		
+		sailToCapsule();
+	    
+		for(int i=0;i<capsules.size();i++){
+		    if(!canPushBoulder(collectors.get(i))){
+		        if(collectors.get(i).capsule==null)
+		            collectors.get(i).sail(capsules.get(i));
+                else
+	                collectors.get(i).sail(getNearestMothership(collectors.get(i),motherships));
+		    }
+		  }
+
+		availablePirates.clear();
+		livingAsteroids.clear();
+		motherships.clear();
+		capsules.clear();
+		collectors.clear();
 		// Try to push, if you didn't - take the capsule and go to the mothership.
+	    }
+	    
+	    Campers(availablePirates, game, game.getEnemyMotherships()[0]);
 	}
 
-	/**
-	 * Makes the pirate try to push an enemy pirate or an asteroid. Returns True if
-	 * it did.
-	 *
-	 * @param pirate
-	 *            - the pushing pirate
-	 * @param game
-	 *            - the current game state
-	 * @return - true if the pirate pushed
-	 */
-	private boolean tryPush(Pirate pirate, PirateGame game) {
-		// Go over all enemies
-		for (Pirate enemy : game.getEnemyLivingPirates()) {
-			// Check if the pirate can push the enemy
-			if (pirate.canPush(enemy)) {
-				// Push enemy!
-				pirate.push(enemy, enemy.initialLocation);
+	private static void avoidBoulders(ArrayList<Asteroid> asteroids, PirateGame game) {
+		for (Pirate pirate : availablePirates) {
+			for (Asteroid asteroid : asteroids) {
+				if (pirate.canPush(asteroid)){
+                    pirate.push(asteroid, (capsules.size() == 0) ? game.getEnemyCapsules()[0].location
+                    : /* this option will be replaced with nearest enemy when available*/getNearestPirate(pirate,enemyPirates));
+				}
 
-				// Print a message
-				System.out.println("pirate " + pirate + " pushes " + enemy + " towards " + enemy.initialLocation);
-
-				// Did push
-				return true;
+				else if(pirate.getLocation().equals(asteroid.getLocation().add(asteroid.direction))){
+					pirate.sail(pirate.initialLocation);
+				}
+				
 			}
 		}
-
-		// Go over all living asteroids
-		for (Asteroid asteroid : game.getLivingAsteroids()) {
-			// Check if the pirate can push the asteroid
-			if (pirate.canPush(asteroid)) {
-				// Push asteroid!
-				pirate.push(asteroid, game.getEnemyCapsules()[0]);
-
-				// Print a message
-				System.out
-						.println("pirate " + pirate + " pushes " + asteroid + " towards " + game.getEnemyCapsules()[0]);
-
-				// Did push
-				return true;
-			}
-		}
-
-		// Didn't push
-		return false;
 	}
-
+	
+	private static Pirate getNearestPirate(GameObject obj,ArrayList<Pirate> arr){
+	    int min=arr.get(0).distance(obj);
+	    Pirate nearest=arr.get(0);
+	    for(int i=1;i<arr.size();i++){
+	        if(arr.get(i).distance(obj)<min){
+	            min=arr.get(i).distance(obj);
+	            nearest=arr.get(i);
+	        }
+	    }
+	    return nearest;
+	}
+	
+	private static Mothership getNearestMothership(GameObject obj,ArrayList<Mothership> arr){
+	    int min=arr.get(0).distance(obj);
+	    Mothership nearest=arr.get(0);
+	    for(int i=1;i<arr.size();i++){
+	        if(arr.get(i).distance(obj)<min){
+	            min=arr.get(i).distance(obj);
+	            nearest=arr.get(i);
+	        }
+	    }
+	    return nearest;
+	}
+	
+	private static Capsule getNearestCapsule(GameObject obj,ArrayList<Capsule> arr){
+	    int min=arr.get(0).distance(obj);
+	    Capsule nearest=arr.get(0);
+	    for(int i=1;i<arr.size();i++){
+	        if(arr.get(i).distance(obj)<min){
+	            min=arr.get(i).distance(obj);
+	            nearest=arr.get(i);
+	        }
+	    }
+	    return nearest;
+	}
+	
+	private static void sailToCapsule(){
+	    for(int i=0;i<capsules.size();i++){
+	        collectors.add(getNearestPirate(capsules.get(i),availablePirates));
+	        availablePirates.remove(getNearestPirate(capsules.get(i),availablePirates));
+	    }
+	}
+	
+	private static boolean canPushBoulder(Pirate pirate){
+	    for(int i=0;i<livingAsteroids.size();i++){
+	        if(pirate.canPush(livingAsteroids.get(i)))
+	            return true;
+	    }
+	    return false;
+	}
+	
 	// Num of pirates pushing EnemyCapsuleHolder at the same time
 		private boolean canPushEnemyCapsule (ArrayList<Pirate> pushingPirates, Pirate enemyCapsulePirate, PirateGame game) {
 			
@@ -148,8 +201,4 @@ public class MyBot implements PirateBot {
 
 			}
 	
-	}
-
-
-
-	
+}
